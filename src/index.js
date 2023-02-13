@@ -7,7 +7,7 @@ mongoose.set("strictQuery",false);
 mongoose
 .connect(process.env.DataDaseConn)
 .then(()=>{
-    console.log("Db Connected");
+    console.log("Db Connected")
 })
 .catch((err) =>console.log(err))
 
