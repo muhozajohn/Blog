@@ -4,8 +4,6 @@ import upload from "../helper/multer";
 
 const userRouter = express.Router();
 
-// router.post("/signup",signUp);
-
 
 userRouter.post("/signup",upload.single("image"), signUp);
 userRouter.post("/signin",upload.single("image"), login);

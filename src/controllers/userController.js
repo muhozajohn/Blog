@@ -1,6 +1,4 @@
 import  Jwt  from "jsonwebtoken";
-// import dotenv  from "dotenv";
-// import  cloudinary from 'cloudinary';
 import bcrypt from "bcryptjs"
 import userModel from "../model/User"
 
@@ -12,17 +10,13 @@ export const signUp =  async (req,res)=>{
         // pawwWord
         const salt = await bcrypt.genSalt(10);
         const hashedPass = await bcrypt.hash(req.body.password,salt);
-        // cloudinary upload
-        // const result = await cloudinary.uploader.upload(req.file.path);
 
         const newUser = new userModel({
             username: req.body.username,
             email: req.body.email,
-            // image: result.secure_url,
             role: req.body.role,
             password: hashedPass    
 
-            // image: req.body.image,
         })
         const token = await Jwt.sign({id:newUser._id},process.env.JWT_SECRET,{expiresIn:process.env.EXPIRE_DATE});
         
@@ -37,7 +31,11 @@ export const signUp =  async (req,res)=>{
         })
     }
     catch(error){
-        res.status(500).json(error)
+        res.status(404).json({
+            message:"Failed to Create User",
+            error: error.message
+            
+        })
     }
 
 
@@ -47,6 +45,7 @@ export const signUp =  async (req,res)=>{
 export const login = async (req,res)=>{
     try{
         const user = await userModel.findOne({username:req.body.username})
+
         if(!user){
             return res.status(404).json({
                 message: "User not found"
@@ -67,8 +66,8 @@ export const login = async (req,res)=>{
     }
     catch(error){
         res.status(500).json({
-            message: "Data not found Failed to login"
-
+            message: "Data not found Failed to login",
+            error: error.message
         })
     }
 }

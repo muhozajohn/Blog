@@ -12,7 +12,6 @@ cloudinary.config({
 
 export const postBlog = async (req, res) => {
     
-    console.log(req.file);
     try {
         const result  = await cloudinary.uploader.upload(req.file.path);
         const newBlog = new blogModel({
@@ -101,8 +100,8 @@ catch(error){
 
 // Delete Blog
 
-export const deleteBlog = async (req,res,err)=>{
-    if(!err){
+export const deleteBlog = async (req,res)=>{
+  
     try {
         const deleteB = await blogModel.findByIdAndDelete(req.params.id)
         res.status(201).json({
@@ -119,14 +118,9 @@ export const deleteBlog = async (req,res,err)=>{
         
     }
 }
-else{
-    res.status(404).json({
-        message:"This Id Have been Deleted before Data Not Found"
-    })
 
-}
     
-}
+
 
 
 

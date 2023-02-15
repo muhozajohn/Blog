@@ -39,8 +39,7 @@ export const Authorization = async (req, res, next) => {
     return res.status(401).json({
       status: "failed",
       error: error.message +
-        " or Please login again" +
-        "token has expired please login again maybe",
+        " or Please login again" + "token has expired please login again maybe",
     });
   }
 };
