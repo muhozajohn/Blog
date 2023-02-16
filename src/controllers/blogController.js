@@ -83,15 +83,23 @@ export const getBlogById = async (req, res) => {
 // Update bLog
 
 export const updateBlog = async (req,res) =>{
+    console.log(req.file,req.bo);
     try {
-        const blogUp = await blogModel.findByIdAndUpdate(req.params.id,req.body,{new:true})
-        res.status(200).json({
+        const result  = await cloudinary.uploader.upload(req.file.path);
+        const blogUp = await blogModel.findByIdAndUpdate(req.params.id,{
+            image: result.secure_url,
+            title: req.body.title,
+            content: req.body.content,
+            author: req.body.author,
+            date: req.body.date,
+        })
+       return res.status(200).json({
             message: "Blog updated successfully",
             data: blogUp
         })
 }
 catch(error){
-    res.status(500).json({
+   return res.status(500).json({
         message: "Data not found",
         error: error.message
 });
